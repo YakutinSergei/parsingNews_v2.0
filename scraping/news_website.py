@@ -210,20 +210,20 @@ async def get_news_content(url, pub_date, source_new):
                 images = article.images
 
                 if images:
-                    # Взять первое изображение из статьи (можно добавить логику для обработки нескольких изображений)
-                    image_url = next(iter(images))
+                    # Перебор всех изображений в списке
+                    for index, image_url in enumerate(images):
+                        # Загрузка изображения и сохранение в файл
+                        image_response = requests.get(image_url)
 
-                    # Загрузка изображения и сохранение в файл
-                    image_response = requests.get(image_url)
+                        image_folder = f'../media/img_news/{news}'  # путь к папке
+                        os.makedirs(image_folder, exist_ok=True)
 
-                    image_folder = f'../media/img_news/{news["id"]}'  # путь к папке
-                    os.makedirs(image_folder, exist_ok=True)
+                        image_file_path = os.path.join(image_folder, f'saved_image_{index}.jpg')
 
-                    image_file_path = os.path.join(image_folder, 'saved_image.jpg')
+                        # Сохранение изображения в файл
+                        with open(image_file_path, 'wb') as img_file:
+                            img_file.write(image_response.content)
 
-                    # Сохранение изображения в файл
-                    with open(image_file_path, 'wb') as img_file:
-                        img_file.write(image_response.content)
                 return 0
             else:
                 return 1

@@ -96,6 +96,26 @@ def news_exists(url):
     return existing_news is not None
 
 
+'''Функция вывода ид источника информации'''
+def find_or_create_source(name):
+    session = create_session()
+
+    # Поиск записи с заданным именем
+    existing_source = session.query(SourceSiteNews).filter(SourceSiteNews.title.ilike(name)).first()
+
+    if existing_source:
+        # Если запись уже существует, вернуть ее id
+        session.close()
+        return existing_source.id
+    else:
+        # Если запись не существует, создать новую запись и вернуть ее id
+        new_source = SourceSiteNews(title=name)
+        session.add(new_source)
+        session.commit()
+        source_id = new_source.id
+        session.close()
+        return source_id
+
 
 # def add_sqlite(title, publish_date, content, url, source_new, compliance=False):
 #     with sqlite3.connect('db.sqlite3') as conn:

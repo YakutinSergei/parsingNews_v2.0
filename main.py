@@ -5,18 +5,18 @@ from scraping.TG_new import run_telegram_script
 #from data_base.model import db_connect
 from scraping.news_website import  get_news_content_url
 
-urls = [['http://kp.ru/rss/allsections.xml', 14, 'Комсомольская правда'],
+urls = [['https://ria.ru/export/rss2/archive/index.xml', 1, 'РИА новости'],
         ['https://tass.ru/rss/v2.xml', 2, 'ТАСС'],
-        ['https://ria.ru/export/rss2/archive/index.xml', 1, 'РИА новости'],
-        ['https://www.mk.ru/rss/news/index.xml', 11, 'Московский Комсомолец'],
-        ['https://www.interfax.ru/rss.asp', 16, 'Интерфакс'],
-        ['https://rssexport.rbc.ru/rbcnews/news/30/full.rss', 7,  'RBC'],
-        ['https://lenta.ru/rss/google-newsstand/main/', 9, 'Лента'],
-        ['https://aif.ru/rss/googlearticles', 15, 'Аргументы и факты'],
-        ['http://www.vz.ru/export/yandex.xml', 8, 'Взгляд'],
         ['http://www.rg.ru/xml/index.xml', 5,'Российская газета'],
         ['http://www.gazeta.ru/export/rss/social.xml', 6, 'Газета.Ru'],
-        ['http://russian.rt.com/rss/', 10, 'RT на русском']
+        ['https://rssexport.rbc.ru/rbcnews/news/30/full.rss', 7,  'RBC'],
+        ['http://www.vz.ru/export/yandex.xml', 8, 'Взгляд'],
+        ['https://lenta.ru/rss/google-newsstand/main/', 9, 'Лента'],
+        ['http://russian.rt.com/rss/', 10, 'RT на русском'],
+        ['https://www.mk.ru/rss/news/index.xml', 11, 'Московский Комсомолец'],
+        ['http://kp.ru/rss/allsections.xml', 14, 'Комсомольская правда'],
+        ['https://aif.ru/rss/googlearticles', 15, 'Аргументы и факты'],
+        ['https://www.interfax.ru/rss.asp', 16, 'Интерфакс'],
         ]
 
 async def main():

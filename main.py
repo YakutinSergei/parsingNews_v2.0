@@ -23,12 +23,12 @@ async def main():
     #await db_connect()
     tasks = []
     # Запуск телеграм-парсера
-    tasks.append(asyncio.create_task(run_telegram_script()))
+    #tasks.append(asyncio.create_task(run_telegram_script()))
 
     tasks.append(asyncio.create_task(create_table()))
-    # for url in urls:
-    #     task = asyncio.create_task(get_news_content_url(url))
-    #     tasks.append(task)
+    for url in urls:
+        task = asyncio.create_task(get_news_content_url(url))
+        tasks.append(task)
     await asyncio.gather(*tasks)
 
 asyncio.run(main())

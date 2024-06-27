@@ -5,7 +5,6 @@ import requests
 import feedparser
 import random
 
-
 from datetime import datetime
 from urllib.parse import urljoin
 
@@ -24,7 +23,7 @@ with open(file_path, 'r', encoding='utf-8') as file:
     lines = [line.strip() for line in file if line.strip()]
 
 
-async def get_news_content_url(url_rss): # Получаем ссылки на новости из RSS
+async def get_news_content_url(url_rss):  # Получаем ссылки на новости из RSS
     feed = feedparser.parse(url_rss[0])
     if feed.bozo:
         print("Error parsing the feed:", feed.bozo_exception)
@@ -58,14 +57,14 @@ async def get_news_content(url, pub_date, source_new):
         article.download()
         article.parse()
         title = article.title  # Заголовок статьи
-        compliance = False # Переменная для проверки есть ли совпадения
+        compliance = False  # Переменная для проверки есть ли совпадения
 
         print("url:", url)  # Заголовок
         print("Title:", title)  # Заголовок
         print("Publish Date:", pub_date)  # Дата опубликования
-        print("_"*30)  # Дата опубликования
+        print("_" * 30)  # Дата опубликования
 
-        #Парсер для ТАСС
+        # Парсер для ТАСС
         if source_new == 2:
             if not news_exists(url):
                 response = requests.get(url=url, headers=random_user_agent_headers())
@@ -85,8 +84,6 @@ async def get_news_content(url, pub_date, source_new):
                 for text in texts:
                     content += text.text
 
-
-
                 matching_words = analyze_news(content, lines)
 
                 if matching_words:
@@ -102,29 +99,28 @@ async def get_news_content(url, pub_date, source_new):
                                 source_new=source_new)
 
                 # Ищем картинку к новости
-                if img_tag:
-                    # Получение URL изображения
-                    img_url = urljoin(url, img_tag['src'])
-                    print(img_tag)
-
-                    # Загрузка изображения
-                    img_response = requests.get(img_url)
-
-                    image_folder = f'../media/img_news/{news}'  # путь к папке
-                    os.makedirs(image_folder, exist_ok=True)
-
-                    image_file_path = os.path.join(image_folder, 'saved_image.jpg')
-
-                    # Сохранение изображения в файл
-                    with open(image_file_path, 'wb') as img_file:
-                        img_file.write(img_response.content)
-
+                # if img_tag:
+                #     # Получение URL изображения
+                #     img_url = urljoin(url, img_tag['src'])
+                #     print(img_tag)
+                #
+                #     # Загрузка изображения
+                #     img_response = requests.get(img_url)
+                #
+                #     image_folder = f'../media/img_news/{news}'  # путь к папке
+                #     os.makedirs(image_folder, exist_ok=True)
+                #
+                #     image_file_path = os.path.join(image_folder, 'saved_image.jpg')
+                #
+                #     # Сохранение изображения в файл
+                #     with open(image_file_path, 'wb') as img_file:
+                #         img_file.write(img_response.content)
 
                 return 0
             else:
                 return 1
 
-        #Парсер для РИА новости
+        # Парсер для РИА новости
         elif source_new == 1:
             if not news_exists(url):
                 response = requests.get(url=url, headers=random_user_agent_headers())
@@ -166,38 +162,37 @@ async def get_news_content(url, pub_date, source_new):
                                 source_new=source_new)
 
                 # Ищем картинку к новости
-                if img_tag:
-                    # Получение URL изображения
-                    img_url = urljoin(url, img_tag['src'])
-
-                    # Загрузка изображения
-                    img_response = requests.get(img_url)
-
-                    image_folder = f'../media/img_news/{news}'  # путь к папке
-                    os.makedirs(image_folder, exist_ok=True)
-
-                    image_file_path = os.path.join(image_folder, 'saved_image.jpg')
-
-                    # Сохранение изображения в файл
-                    with open(image_file_path, 'wb') as img_file:
-                        img_file.write(img_response.content)
-
-                    return 0
+                # if img_tag:
+                #     # Получение URL изображения
+                #     img_url = urljoin(url, img_tag['src'])
+                #
+                #     # Загрузка изображения
+                #     img_response = requests.get(img_url)
+                #
+                #     image_folder = f'../media/img_news/{news}'  # путь к папке
+                #     os.makedirs(image_folder, exist_ok=True)
+                #
+                #     image_file_path = os.path.join(image_folder, 'saved_image.jpg')
+                #
+                #     # Сохранение изображения в файл
+                #     with open(image_file_path, 'wb') as img_file:
+                #         img_file.write(img_response.content)
+                #
+                return 0
             else:
                 return 1
 
 
 
-        #Парсер для остальных источников
+        # Парсер для остальных источников
         else:
-            if not news_exists(url): # Проверяем есть ли такая новость
+            if not news_exists(url):  # Проверяем есть ли такая новость
                 content = article.text
                 matching_words = analyze_news(content, lines)
 
                 if matching_words:
                     print(f"Совпадающие слова: {matching_words}")
                     compliance = True
-
 
                 # Добавляем в базу данных
                 news = add_news(title=title,
@@ -209,20 +204,20 @@ async def get_news_content(url, pub_date, source_new):
 
                 images = article.images
 
-                if images:
-                    # Перебор всех изображений в списке
-                    for index, image_url in enumerate(images):
-                        # Загрузка изображения и сохранение в файл
-                        image_response = requests.get(image_url)
-
-                        image_folder = f'../media/img_news/{news}'  # путь к папке
-                        os.makedirs(image_folder, exist_ok=True)
-
-                        image_file_path = os.path.join(image_folder, f'saved_image_{index}.jpg')
-
-                        # Сохранение изображения в файл
-                        with open(image_file_path, 'wb') as img_file:
-                            img_file.write(image_response.content)
+                # if images:
+                #     # Перебор всех изображений в списке
+                #     for index, image_url in enumerate(images):
+                #         # Загрузка изображения и сохранение в файл
+                #         image_response = requests.get(image_url)
+                #
+                #         image_folder = f'../media/img_news/{news}'  # путь к папке
+                #         os.makedirs(image_folder, exist_ok=True)
+                #
+                #         image_file_path = os.path.join(image_folder, f'saved_image_{index}.jpg')
+                #
+                #         # Сохранение изображения в файл
+                #         with open(image_file_path, 'wb') as img_file:
+                #             img_file.write(image_response.content)
 
                 return 0
             else:
@@ -240,7 +235,6 @@ def analyze_news(news_text, word_list):
             return keyword  # Вернуть ключевое слово и совпавшую фразу
 
     return None
-
 
 
 def random_user_agent_headers():

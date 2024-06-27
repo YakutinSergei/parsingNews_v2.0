@@ -1,9 +1,10 @@
 import sqlite3
+import datetime
 
 from environs import Env
 from sqlalchemy import Column, Integer, String, DateTime, create_engine, func, Boolean, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker, relationship, Mapped, mapped_column
 
 env = Env()
 env.read_env()
@@ -14,24 +15,23 @@ Base = declarative_base()
 
 # Определение модели таблицы
 class NewsTable(Base):
-    __tablename__ = 'monitor_rhb_news'
+    __tablename__ = 'news_2sn'
 
-    id = Column(Integer, primary_key=True)
-    title = Column(String)
-    content = Column(String)
-    url = Column(String)
-    img_news = Column(String)
-    flag_news = Column(Boolean)
-    key_words = Column(String)
-    city_news = Column(String)
-    object_news = Column(String)
-    publish_date = Column(DateTime)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str]
+    content: Mapped[str]
+    url: Mapped[str]
+    img_news: Mapped[str | None]
+    flag_news: Mapped[bool | None]
+    key_words: Mapped[str | None]
+    city_news: Mapped[str | None]
+    object_news: Mapped[str | None]
+    events: Mapped[bool | None]
+    publish_date: Mapped[datetime.datetime]
+    source: Mapped[str]
+    sourse_id: Mapped[int] = mapped_column(ForeignKey("monitor_source_site_news.id"))
 
-    # Установка внешнего ключа
-    source_id = Column(Integer, ForeignKey('monitor_source_site_news.id'))
 
-    # Определение отношения между NewsTable и SourceSiteNews
-    source_site_news = relationship('SourceSiteNews', back_populates='rhb_news')
 
 
 class SourceSiteNews(Base):
@@ -42,8 +42,7 @@ class SourceSiteNews(Base):
     url = Column(String)
     img_site_news = Column(String)
 
-    # Определение отношения между SourceSiteNews и NewsTable
-    rhb_news = relationship('NewsTable', back_populates='source_site_news')
+
 
 
 

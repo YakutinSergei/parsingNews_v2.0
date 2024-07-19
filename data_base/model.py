@@ -19,17 +19,19 @@ class NewsTable(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str]
-    content: Mapped[str]
-    url: Mapped[str]
-    img_news: Mapped[str | None]
-    flag_news: Mapped[bool | None]
-    key_words: Mapped[str | None]
-    city_news: Mapped[str | None]
-    object_news: Mapped[str | None]
-    events: Mapped[bool | None]
-    publish_date: Mapped[datetime.datetime]
+    description: Mapped[str]
+    news_date: Mapped[datetime.datetime]
+    created_at: Mapped[datetime.datetime]
+    updated_at: Mapped[datetime.datetime]
     source: Mapped[str]
-    sourse_id: Mapped[int] = mapped_column(ForeignKey("monitor_source_site_news.id"))
+    url: Mapped[str]
+    #img_news: Mapped[str | None]
+    #flag_news: Mapped[bool | None]
+    #key_words: Mapped[str | None]
+    # city_news: Mapped[str | None]
+    # object_news: Mapped[str | None]
+    # events: Mapped[bool | None]
+    # source_id: Mapped[int] = mapped_column(ForeignKey("monitor_source_site_news.id"))
 
 
 

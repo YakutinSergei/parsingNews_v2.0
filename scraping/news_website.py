@@ -1,5 +1,4 @@
 import asyncio
-import os
 import re
 import requests
 import feedparser

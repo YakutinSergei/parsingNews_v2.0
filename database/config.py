@@ -1,0 +1,28 @@
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from environs import Env
+
+
+env = Env()
+env.read_env()
+
+
+class Settings(BaseSettings):
+    # DB_HOST: str
+    # DB_PORT: int
+    # DB_USER: str
+    # DB_PASS: str
+    # DB_NAME: str
+
+    @property
+    def DATADASE_URL_asyncpg(self):
+        return f"postgresql+asyncpg://{env('DB_USER')}:{env('DB_PASS')}@{env('DB_HOST')}:{env('DB_PORT')}/{env('DB_NAME')}"
+
+
+    @property
+    def DATADASE_URL_psycopg(self):
+        return f"postgresql+psycopg://{env('DB_USER')}:{env('DB_PASS')}@{env('DB_HOST')}:{env('DB_PORT')}/{env('DB_NAME')}"
+
+
+settings = Settings()
+    

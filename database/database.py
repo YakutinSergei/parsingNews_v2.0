@@ -21,14 +21,17 @@ engine_asinc = create_async_engine(
 )
 
 
-async def get_123():
-    async with engine_asinc.connect() as conn:
-        res = await conn.execute(text("SELECT VERSION()"))
-        print(f'{res.all()=}')
-
-
-async_session = async_sessionmaker(engine_asinc)
-
 
 class Base(DeclarativeBase):
     pass
+
+
+# фабрика сессий
+async_session = sessionmaker(engine_asinc, class_=AsyncSession, expire_on_commit=False)
+
+async def init_db():
+    """
+    Создаёт таблицы в БД, если их нет.
+    """
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)

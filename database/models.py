@@ -1,9 +1,9 @@
 import datetime
 from sqlalchemy import Column, DateTime, String, Boolean, Integer, func, ForeignKey, JSON
 from sqlalchemy.orm import Mapped, mapped_column
-from date_base.database import Base
 from typing import Optional, List
 
+from database.database import Base
 
 
 # Объявляем классы таблиц

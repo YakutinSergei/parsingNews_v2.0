@@ -14,6 +14,11 @@ class Settings(BaseSettings):
     # DB_PASS: str
     # DB_NAME: str
 
+    # Kafka
+    KAFKA_BOOTSTRAP_SERVERS: str = env.str("KAFKA_BOOTSTRAP_SERVERS")
+    KAFKA_TOPIC_RAW: str = "news_raw"
+    KAFKA_TOPIC_SAVED: str = "news_saved"
+
     @property
     def DATADASE_URL_asyncpg(self):
         return f"postgresql+asyncpg://{env('DB_USER')}:{env('DB_PASS')}@{env('DB_HOST')}:{env('DB_PORT')}/{env('DB_NAME')}"

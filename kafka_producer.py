@@ -11,7 +11,7 @@ async def init_producer():
     """
     global producer
     producer = AIOKafkaProducer(
-        bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS,
+        bootstrap_servers="localhost:9092",
         value_serializer=lambda v: json.dumps(v).encode("utf-8")
     )
     await producer.start()

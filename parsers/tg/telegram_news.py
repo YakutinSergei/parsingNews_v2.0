@@ -48,21 +48,23 @@ async def news_input(title: str,
     '''Отправляет в кафка'''
     if isinstance(news_date, datetime):
         news_date = news_date.isoformat()
+    if not source or not description:
+        return None
+    else:
+        # 4. Формируем объект новости
+        news = {
+            "title": title,
+            "description": description,
+            "news_date": news_date,
+            "url": url,
+            "source": f'tg_{source}',
+            "flag": "raw",
+            "name": "tg_pars"
+        }
 
-    # 4. Формируем объект новости
-    news = {
-        "title": title,
-        "description": description,
-        "news_date": news_date,
-        "url": url,
-        "source": f'tg_{source}',
-        "flag": "raw",
-        "name": "tg_pars"
-    }
-
-    # 5. Отправляем в Kafka
-    await send_raw(news)
-    print(f"📤 [{source}] новая новость отправлена: {description[:100]}")
+        # 5. Отправляем в Kafka
+        await send_raw(news)
+        print(f"📤 [{source}] новая новость отправлена: {description[:100]}")
 
 
 

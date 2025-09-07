@@ -118,7 +118,7 @@ async def process_rss(session, rss):
             # 4. Формируем объект новости
             news = {
                 "title": entry.title,
-                "description": content,
+                "description": clean_for_telegram(content),
                 "news_date": normalize_date_str(entry),
                 "url": url,
                 "source": rss_name,
@@ -154,3 +154,19 @@ def normalize_date_str(entry) -> str:
 
     # 3. fallback → текущее время
     return datetime.datetime.utcnow().isoformat()
+
+import re
+
+def clean_for_telegram(text: str) -> str:
+    if not text:
+        return ""
+
+    # убираем <img> и прочие теги без поддержки
+    text = re.sub(r"<img[^>]*>", "", text)
+    text = re.sub(r"<br\s*/?>", "\n", text)   # <br> заменяем на перенос строки
+
+    # оставляем только допустимые <a href="">
+    text = re.sub(r'<a href="([^"]+)">([^<]+)</a>', r'<a href="\1">\2</a>', text)
+
+    # всё остальное экранируем, чтобы не сломало HTML парсер Телеграма
+    return text

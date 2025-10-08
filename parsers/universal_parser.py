@@ -91,7 +91,6 @@ def extract_article(url: str, flag: str = "user_web", name: str = "article_parse
         except Exception as e:
             print("[Readability] Ошибка:", e)
 
-    print(text)
     # === Проверка валидности ===
     if not text or looks_like_gibberish(text):
         print(f"⚠️ Каракули/капча вместо статьи, url={url}")
@@ -116,13 +115,3 @@ def extract_article(url: str, flag: str = "user_web", name: str = "article_parse
         "flag": flag,
         "name": name
     }
-
-
-# ==== Пример ====
-if __name__ == "__main__":
-    url = "https://www.reuters.com/business/healthcare-pharmaceuticals/over-1000-indonesians-sick-school-meals-more-food-poisoning-outbreaks-2025-09-25/"
-    article = extract_article(url)
-    if article:
-        print("✅ Новость готова:", article)
-    else:
-        print("❌ Капча/каракулы — не отправляем в Kafka")

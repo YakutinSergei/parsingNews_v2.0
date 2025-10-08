@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     KAFKA_BOOTSTRAP_SERVERS: str = env.str("KAFKA_BOOTSTRAP_SERVERS")
     KAFKA_TOPIC_RAW: str = "news_raw"
     KAFKA_TOPIC_SAVED: str = "news_saved"
+    KAFKA_TOPIC_TG_LINKS: str  = "tg_links"  # для ссылок из телеги
 
     @property
     def DATADASE_URL_asyncpg(self):
